@@ -1,28 +1,80 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="navBar">
+    <img id= "irsLogo" alt="ironSource logo" src="./assets/logoRound.png">
+    <nav>
+      <router-link tag="li" class = "tab" id="createTab" to="/create">Create</router-link>
+      <router-link tag="li" class = "tab" id="listTab" to="/list">List</router-link>
+    </nav>
+    <router-view/>
+  </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+
+  data() {
+    return {
+    }
   }
+
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Maven+Pro');
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-family: 'Maven Pro', sans-serif;
+
 }
+body {
+  padding-top: 10px;
+  color: grey;
+}
+#irsLogo {
+  height:40px;
+  width:40px;
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 15px;
+}
+nav {
+  display: inline-block;
+  margin-left:10px;
+  border-radius: 4px;
+}
+nav li {
+  list-style-type: none;
+  text-align: center;
+  margin-right: 20px;
+  width:80px;
+  height: 30px;
+  float: left;
+  padding-top: 8px;
+  color: white;
+  border: 1px solid transparent;
+
+}
+#navBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: url('./assets/lightBanner.jpg') no-repeat;
+  background-size:100% 150px;
+}
+
+nav li:hover,
+ nav li.router-link-exact-active {
+  transition: all .4s ease;
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 20px;
+  color: white
+ }
+
 </style>

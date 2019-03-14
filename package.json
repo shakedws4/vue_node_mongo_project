@@ -1,14 +1,28 @@
 {
-  "name": "ab_test",
+  "name": "ab-test-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 7777",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue": "^2.5.22"
+    "axios": "^0.18.0",
+    "connect-multiparty": "^2.2.0",
+    "cron": "^1.6.0",
+    "express-validator": "^5.3.1",
+    "fs-extra": "^7.0.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.4.15",
+    "nodemailer": "^5.1.1",
+    "terser": "^3.14.1",
+    "vue": "^2.6.2",
+    "vue-json-schema": "^1.1.1",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.0.2",
+    "vue-virtual-table": "^0.2.7",
+    "vuejs-smart-table": "0.0.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
@@ -17,7 +31,9 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.5.21"
+    "nodemon": "^1.18.10",
+    "vue-template-compiler": "^2.6.2",
+    "webpack": "^4.29.1"
   },
   "eslintConfig": {
     "root": true,

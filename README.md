@@ -1,4 +1,4 @@
-# ab_test
+# ab-test-dashboard - Shaked Vosco
 
 ## Project setup
 ```
