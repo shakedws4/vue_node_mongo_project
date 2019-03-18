@@ -3,13 +3,11 @@ import axios from 'axios'
 const extParams = require('../extParams');
 const PORT = extParams.port;
 
-const url = `http://localhost:${PORT}/create/test/`;
-const url2 = `http://localhost:${PORT}/create/user/`;
-const url3 = `http://localhost:${PORT}/create/installers/`;
-const url4 = `http://localhost:${PORT}/create/downloaders/`;
+const url = `http://localhost:${PORT}/create/user/`;
+const url2 = `http://localhost:${PORT}/create/userPermissions/`;
 
 class Service {
-    static getTests() {
+    static getUsers() {
         return new Promise(async (resolve, reject) => {
             try {
                 const res = await axios.get(url);
@@ -26,39 +24,7 @@ class Service {
         });
     }
 
-    static getInstallers() {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const res = await axios.get(url3);
-                const data = res.data.data;
-                resolve(
-                    data.map(test => ({
-                        ...test
-                    }))
-                );
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    static getDownloaders() {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const res = await axios.get(url4);
-                const data = res.data.data;
-                resolve(
-                    data.map(test => ({
-                        ...test
-                    }))
-                );
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    static getUserPermissions() {
+      static getUserPermissions() {
         return new Promise(async (resolve, reject) => {
             try {
                 const res = await axios.get(url2);
@@ -74,20 +40,16 @@ class Service {
         });
     }
 
-    static insertTest(test) {
+    static insertUser(test) {
         return axios.post(url, {
-            "account": test.account,
-            "installer": test.installer,
-            "branch": test.branch,
-            "requestedBy": test.requestedBy,
-            "developer": test.developer,
-            "testName": test.testName,
+            "name": test.name,
+            "lastName": test.lastName,
+            "mail": test.mail,
             "description": test.description,
-            "content": test.content
         })
     }
 
-    static deletTest(id) {
+    static deleteUser(id) {
         return axios.delete(`${url}${id}`)
     }
 }

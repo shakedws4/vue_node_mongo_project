@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <div id="navBar">
-    <img id= "irsLogo" alt="ironSource logo" src="./assets/logoRound.png">
     <nav>
       <router-link tag="li" class = "tab" id="createTab" to="/create">Create</router-link>
       <router-link tag="li" class = "tab" id="listTab" to="/list">List</router-link>
@@ -45,11 +44,13 @@ nav {
   display: inline-block;
   margin-left:10px;
   border-radius: 4px;
+  margin-left: 40px;
 }
 nav li {
   list-style-type: none;
   text-align: center;
-  margin-right: 20px;
+  margin-top: 10px;
+  margin-left: 20px;
   width:80px;
   height: 30px;
   float: left;

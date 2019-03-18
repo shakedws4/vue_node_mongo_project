@@ -4,22 +4,16 @@ const   express     = require('express'),
 
 let routes = function() {
 
-    router.route('/test')
-        .get(controller.getTests)
-        .post(controller.addTest)
+    router.route('/user')
+        .get(controller.getUsers)
+        .post(controller.addUser)
         
 
-    router.route('/test/:id')
-        .delete(controller.deleteTest)
+    router.route('/user/:id')
+        .delete(controller.deleteUser)
 
-    router.route('/user')
+    router.route('/userPermissions')
         .get(controller.getUserPermissions)
-
-    router.route('/installers')
-        .get(controller.getInstallers);
-
-    router.route('/downloaders')
-        .get(controller.getDownloaders);    
 
 return router;
 

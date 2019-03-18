@@ -1,30 +1,26 @@
 <template>
   <div id="List" name="List">
     <div class="searchBox">
-      <label>Filter by Account:</label>
-      <input class="form-control" v-model="accountsearch" type="text" placeholder="account"/> 
+      <label>Filter by Fiest Name:</label>
+      <input class="form-control" v-model="namesearch" type="text" placeholder="name"/> 
     </div>
     <div class="searchBox">
-      <label>Filter by Installer:</label>
-      <input class="form-control" v-model="installersearch" type="text" placeholder="installer"/> 
+      <label>Filter by Last Name:</label>
+      <input class="form-control" v-model="lastNamesearch" type="text" placeholder="lastName"/> 
     </div>
     
     <table id="table" >
       <tr class="Headers">
-          <th>Account</th>
-          <th>Installer</th>
-          <th>Requested by</th>
-          <th>Developer</th>
-          <th>Test Name</th>
+          <th>Name</th>
+          <th>LastName</th>
+          <th>Mail</th>
           <th v-if="authorized">Delete</th>
       </tr>
       <template v-for="item in filteredData" >
         <tr @click="expanded(item._id)" class="dataRows" :key="item._id">
-          <td>{{ item.account }}</td>
-          <td>{{ item.installer }}</td>
-          <td>{{ item.requestedBy }}</td>
-          <td>{{ item.developer }}</td>
-          <td>{{ item.testName }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.lastName }}</td>
+          <td>{{ item.mail }}</td>
           <td v-if="authorized"><figure class="swap-on-hover"  @click="deleteItem(item._id)"> <img class= "dustBinImg" alt="dust bin logo" src="../assets/dustbin.png"><img class= "dustBinImgW" alt="dust bin logo" src="../assets/dustbinW.png"></figure></td>
         </tr>
         <transition  name="fade" :key="item._id+3">
@@ -32,9 +28,6 @@
             <div class="exptitle">Description: </div>
             <div class="exp">{{ item.description }}</div>
           </div>
-        </transition>
-        <transition  name="fade" :key="item._id+4">
-          <div  class = "expandedData" v-if="opened.includes(item._id)" :key="item._id+2"><div class="exptitle">Content: </div><div class="exp">{{ item.content }}</div></div>
         </transition>
       </template>
     </table>
@@ -49,16 +42,15 @@ export default {
   name: 'List',
   data: () => ({
     displayData : [],
-    Accounts : [],
-    accountsearch : '',
-    installersearch : '',
+    namesearch : '',
+    lastNamesearch : '',
     opened : [],
     userPermissions : []
 
   }),
   async created() {
       try {
-        this.getTestData();
+        this.getUsersData();
         this.getPermissions()
       } catch(err) {
         this.error = err.message;
@@ -67,8 +59,8 @@ export default {
   computed: {
     filteredData : function() {     
       return this.displayData
-      .filter(item => item.account.match(this.accountsearch))
-      .filter(item => item.installer.match(this.installersearch))
+      .filter(item => item.name.match(this.namesearch))
+      .filter(item => item.lastName.match(this.lastNamesearch))
     },
     authorized : function() { //TODO: need to decide what us the admin level for deleting
       return (this.userPermissions == '2')
@@ -83,27 +75,26 @@ export default {
         this.opened.push(id)
       }
     },
-    async getTestData () {
-      this.displayData = await Service.getTests();
-        for (let test of this.displayData) {
-          test.content = Buffer.from(test.content, 'base64').toString()
-        }
+    async getUsersData () {
+      this.displayData = await Service.getUsers();
     },
     async deleteItem (id) {
       try {
-        await Service.deletTest(id);
-        this.getTestData()
+        await Service.deleteUser(id);
+        this.getUsersData()
         
       } catch(err) {
         this.error = err.message;
+        console.log("deleteItem error:"  + this.error)
       }
     },
     async getPermissions () {
       try {
         this.userPermissions = await Service.getUserPermissions();
-        this.userPermissions = this.userPermissions[0].permissions.ABBA //TODO: ABBA need to be changed to abTest permissions once it will be updated in the database
+        this.userPermissions = this.userPermissions[0].permissions
       } catch(err) {
         this.error = err.message;
+        console.log("getPermissions error:"  + this.error)
       }
       
     }
@@ -207,6 +198,7 @@ label {
 }
 .form-control {
   left:250px;
+  margin-left: 10px;
 }
 .expandedData {
   padding-left:40px;

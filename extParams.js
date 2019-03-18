@@ -1,5 +1,5 @@
 var extParams = {
-    appName : 'ab-test-dashboard',
+    appName : 'veuNodeMongoProject',
     port : 7777,
 }
 

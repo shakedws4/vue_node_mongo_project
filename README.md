@@ -1,4 +1,4 @@
-# ab-test-dashboard - Shaked Vosco
+# vue_node_mongo_project-dashboard - Shaked Vosco
 
 ## Project setup
 ```

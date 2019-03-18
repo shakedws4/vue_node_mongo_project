@@ -70,19 +70,19 @@ let utils = {
     
         return false;
     },
-    getOpenedBranchesPaths: function(branchPath) {
-        let openedBranchesPaths = []
-        if (fs.existsSync(branchPath)) {
-            for (let dirName of fs.readdirSync(branchPath)) {
-                let dirFullPath = path.resolve(`${branchPath}/${dirName}`)
+    getOpenedMailesPaths: function(MailPath) {
+        let openedMailesPaths = []
+        if (fs.existsSync(MailPath)) {
+            for (let dirName of fs.readdirSync(MailPath)) {
+                let dirFullPath = path.resolve(`${MailPath}/${dirName}`)
                 if (!utils.isDirectory(dirFullPath)) continue
                 if (dirName.endsWith('_merged') || dirName.endsWith('_discarded')) continue
 
-                openedBranchesPaths.push(dirFullPath)
+                openedMailesPaths.push(dirFullPath)
             }
         }
 
-        return openedBranchesPaths
+        return openedMailesPaths
     },
     isArrayEqual: function(arr1, arr2) {
         if (arr1.length == arr2.length

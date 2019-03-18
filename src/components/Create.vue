@@ -1,61 +1,45 @@
 <template>
   <div class="Create">
     <form autocomplete="off" @submit="checkAndSubmit" >
-      <div id="account" class="form-group">
-        <label>Account</label>
-          <input type="text" v-model="accountQuery" class="input" v-on:keyup="toggleVisible" placeholder="insert Account">
+      <div id="name" class="form-group">
+        <label>Name</label>
+          <input type="text" v-model="nameQuery" class="input" v-on:keyup="toggleVisible" placeholder="insert Name">
           <div class="dontShow" >
               <ul>
                   <li class="opt" v-for="(match,_id) in matches" 
                   :key="_id" 
-                  v-text="match.account" 
+                  v-text="match.name" 
                   @click="itemClicked(_id)"></li>
               </ul>
           </div>
       </div>
-      <div id="installer" class="form-group">
-          <label>Installer</label>
-          <input type="text" class="input" v-on:click="toggleVisible" placeholder="insert Installer" v-on:keyup.delete="closeOpt" v-model="installerQuery" readonly>
+      <div id="lastName" class="form-group">
+          <label>LastName</label>
+          <input type="text" class="input" v-on:click="toggleVisible" placeholder="insert LastName" v-on:keyup.delete="closeOpt" v-model="lastNameQuery">
           <div class="dontShow">
               <ul>
-                  <li class="opt" v-for="(match,_id) in installers" 
+                  <li class="opt" v-for="(match,_id) in lastNames" 
                   :key="_id" 
                   v-text="match" 
                   @click="chosen(_id,1)"></li>
               </ul>
           </div>
       </div>
-      <div id="branch" class="form-group">
-          <label>Branch</label>
-          <input type="text" class="input" v-on:click="toggleVisible" placeholder="insert branch" v-on:keyup.delete="closeOpt" v-model="branchQuery" readonly> 
+      <div id="mail" class="form-group">
+          <label>Mail</label>
+          <input type="text" class="input" v-on:click="toggleVisible" placeholder="insert Mail" v-on:keyup.delete="closeOpt" v-model="mailQuery"> 
           <div class="dontShow">
               <ul>
-                  <li class="opt" v-for="(match,_id) in branches" 
+                  <li class="opt" v-for="(match,_id) in mails" 
                   :key="_id" 
                   v-text="match" 
                   @click="chosen(_id,2)"></li>
               </ul>
           </div>
       </div>
-      <div class="form-group">
-          <label>Requested by </label>
-          <input v-model="requestedBy" type="text" class="form-control" name="requestedBy" id="requestedBy" placeholder="insert a name">
-      </div>
-      <div class="form-group">
-          <label>Developer</label>
-          <input v-model="developer" type="text" class="form-control" name="developer" id="developer" placeholder="insert developer name">
-      </div>
-      <div class="form-group">
-          <label>AB Test Name</label>
-          <input v-model="testName" type="text" class="form-control" name="testName" id="testName" placeholder="insert test name">
-      </div>
       <div class="form-group-lg">
           <label >Description</label>
           <textarea v-model="description" class="form-control" name="description" id="description" rows="10" placeholder="insert description"></textarea>
-      </div>
-      <div class="form-group-lg">
-          <label >Content</label>
-          <textarea v-model="content" class="form-control" name="content" id="content" rows="10" placeholder="insert content"></textarea>
       </div>
       <button class="button" type="submit">Create</button>
       <transition  name="alert-in">
@@ -85,39 +69,34 @@
     data: () => ({
       errors: [],
       error: '',
-      requestedBy: '',
-      developer: '',
-      branch:'',
-      testName: '',
+      mail:'',
       description: '',
-      content: '',
-      tests:[],
+      users:[],
       selectItem:'',
       selected:0,
-      accountQuery: '',
-      installers: '',
-      branches: '',
-      installerQuery : '',
-      branchQuery : '',
-      newTest : {},
+      nameQuery: '',
+      lastNames: '',
+      mails: '',
+      lastNameQuery : '',
+      mailQuery : '',
+      newUser : {},
       SuccessMessage : '',
       userPermissions : []
     }),
     async created() {
       try {
-        this.tests = await Service.getInstallers();
-        Object.assign(this.tests, await Service.getDownloaders());
+        this.users = await Service.getUsers();
         this.getPermissions()
       } catch(err) {
         this.error = err.message;
-
+        console.log("created error: " + this.error)
       }
     },
     methods: {
       checkAndSubmit : function(e){
         
         this.errors = [];
-        if (!this.accountQuery || !this.installerQuery || !this.branchQuery || !this.requestedBy || !this.developer || !this.testName || !this.description || !this.content) {
+        if (!this.nameQuery || !this.lastNameQuery || !this.mailQuery || !this.description) {
           this.errors.push('Please fill up all fields');
         }
                 
@@ -128,87 +107,76 @@
         e.preventDefault();
       },
       async post() {
-        this.newTest.account = this.accountQuery;
-        this.newTest.installer = this.installerQuery;
-        this.newTest.branch = this.branchQuery;
-        this.newTest.requestedBy = this.requestedBy;
-        this.newTest.developer = this.developer;
-        this.newTest.testName = this.testName;
-        this.newTest.description = this.description;
-        this.newTest.content = Buffer.from(this.content).toString('base64');
+        this.newUser.name = this.nameQuery;
+        this.newUser.lastName = this.lastNameQuery;
+        this.newUser.mail = this.mailQuery;
+        this.newUser.description = this.description;
         try {
-          await Service.insertTest(this.newTest);
+          await Service.insertUser(this.newUser);
           this.clearForm();
           this.showSuccess();
         } catch(err) {
           this.error = err.message;
+          console.log("post error: " + this.error)
         }
       },
       clearForm : function () {
-        this.accountQuery = '';
-        this.installerQuery = '';
-        this.branchQuery = '';
-        this.requestedBy = '';
-        this.developer = '';
-        this.testName = '';
+        this.nameQuery = '';
+        this.lastNameQuery = '';
+        this.mailQuery = '';
         this.description = '';
-        this.content = '';
       },
       showSuccess : function() {
-        this.SuccessMessage = 'Test was added'
+        this.SuccessMessage = 'User was added'
       },
       toggleVisible: function() {
-        var account = document.getElementById("account")
-        var parent = account.children[2].className;
-        var child = account.getElementsByClassName("opt")
+        var name = document.getElementById("name")
+        var parent = name.children[2].className;
+        var child = name.getElementsByClassName("opt")
         if (child.length == 0 && parent == "showOptions") 
         event.currentTarget.nextSibling.className='dontShow';
         if (child.length != 0 && parent == "dontShow") 
         event.currentTarget.nextSibling.className='showOptions';
       },
       closeOpt: function() {
-        
-        if (this.installerQuery == '') event.currentTarget.nextSibling.className='dontShow';
-        if (this.branchQuery == '') event.currentTarget.nextSibling.className='dontShow';
+        if (this.lastNameQuery == '') event.currentTarget.nextSibling.className='dontShow';
       },
       itemClicked: function(id) {
         this.selectItem = this.matches[id];
-        this.accountQuery= this.selectItem.account;
-        this.installers = this.selectItem.installers;
-        this.branches = this.selectItem.branches;
-        this.branches = this.branches.filter( value => {
-          return value != '';
-        });
+        this.nameQuery= this.selectItem.name;
+        this.lastNames = this.selectItem.lastNames;
+        this.mails = this.selectItem.mails;
         
-        if (this.authorized) this.branches.push('trunk')
+        if (this.authorized) this.mails.push('trunk')
         event.currentTarget.parentNode.parentNode.className="dontShow";
       },
       chosen: function(id,n) {
-        if (n==1) this.installerQuery = this.installers[id]
-        if (n==2) this.branchQuery = this.branches[id]
+        if (n==1) this.lastNameQuery = this.lastNames[id]
+        if (n==2) this.mailQuery = this.mails[id]
         event.currentTarget.parentNode.parentNode.className="dontShow";
       },
       async getPermissions () {
         try {
           this.userPermissions = await Service.getUserPermissions();
-          this.userPermissions = this.userPermissions[0].permissions.ABBA //TODO: ABBA need to be changed to abTest permissions once it will be updated in the database
+          this.userPermissions = this.userPermissions[0].permissions 
         } catch(err) {
           this.error = err.message;
+          console.log("getPermissions error: " + this.error)
         }
         
       },
-      authorized : function() { //TODO: need to decide what us the admin level for deleting
+      authorized : function() {
           return (this.userPermissions == '2')
       }
     },
     computed: {
       matches: function() {
-          if(this.accountQuery == ''){
+          if(this.nameQuery == ''){
               return [];
           }
-          return this.tests.filter(item => {
-              return item.account.toLowerCase().match(this.accountQuery.toLowerCase())
-          })//TODO: remove repeating accounts
+          return this.users.filter(item => {
+              return item.name.toLowerCase().match(this.nameQuery.toLowerCase())
+          })
       }
       
     }
@@ -248,6 +216,9 @@ form {
     width: 510px;
     border: none;
     background-color: transparent;
+}
+#description {
+  margin-left: 0;
 }
 
 label{
