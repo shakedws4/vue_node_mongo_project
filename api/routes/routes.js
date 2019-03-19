@@ -12,8 +12,6 @@ let routes = function() {
     router.route('/user/:id')
         .delete(controller.deleteUser)
 
-    router.route('/userPermissions')
-        .get(controller.getUserPermissions)
 
 return router;
 

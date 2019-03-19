@@ -1,6 +1,8 @@
 const 	express = require('express'),
 		extParams = require('./extParams'),
-		app = express();
+		app = express(),
+		bodyParser = require('body-parser');
+
 
 // routers
 const	router = require('./api/routes/routes')();
@@ -9,6 +11,7 @@ const	router = require('./api/routes/routes')();
 const	PORT = extParams.port,
 		APP_NAME = extParams.appName;
 
+app.use(bodyParser.json({limit: '50mb'}));
 
 app.use('/', express.static('dist'));
   

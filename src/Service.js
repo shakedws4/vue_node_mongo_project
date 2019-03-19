@@ -4,7 +4,6 @@ const extParams = require('../extParams');
 const PORT = extParams.port;
 
 const url = `http://localhost:${PORT}/create/user/`;
-const url2 = `http://localhost:${PORT}/create/userPermissions/`;
 
 class Service {
     static getUsers() {
@@ -24,28 +23,12 @@ class Service {
         });
     }
 
-      static getUserPermissions() {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const res = await axios.get(url2);
-                const data = res.data;
-                resolve(
-                    data.map(user => ({
-                        ...user
-                    }))
-                );
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    static insertUser(test) {
+    static insertUser(user) {
         return axios.post(url, {
-            "name": test.name,
-            "lastName": test.lastName,
-            "mail": test.mail,
-            "description": test.description,
+            "name": user.name,
+            "lastName": user.lastName,
+            "mail": user.mail,
+            "description": user.description,
         })
     }
 

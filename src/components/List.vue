@@ -62,7 +62,7 @@ export default {
       .filter(item => item.name.match(this.namesearch))
       .filter(item => item.lastName.match(this.lastNamesearch))
     },
-    authorized : function() { //TODO: need to decide what us the admin level for deleting
+    authorized : function() {
       return (this.userPermissions == '2')
     }
   },
@@ -87,16 +87,6 @@ export default {
         this.error = err.message;
         console.log("deleteItem error:"  + this.error)
       }
-    },
-    async getPermissions () {
-      try {
-        this.userPermissions = await Service.getUserPermissions();
-        this.userPermissions = this.userPermissions[0].permissions
-      } catch(err) {
-        this.error = err.message;
-        console.log("getPermissions error:"  + this.error)
-      }
-      
     }
   }
 }

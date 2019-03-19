@@ -86,7 +86,6 @@
     async created() {
       try {
         this.users = await Service.getUsers();
-        this.getPermissions()
       } catch(err) {
         this.error = err.message;
         console.log("created error: " + this.error)
@@ -146,27 +145,12 @@
         this.nameQuery= this.selectItem.name;
         this.lastNames = this.selectItem.lastNames;
         this.mails = this.selectItem.mails;
-        
-        if (this.authorized) this.mails.push('trunk')
         event.currentTarget.parentNode.parentNode.className="dontShow";
       },
       chosen: function(id,n) {
         if (n==1) this.lastNameQuery = this.lastNames[id]
         if (n==2) this.mailQuery = this.mails[id]
         event.currentTarget.parentNode.parentNode.className="dontShow";
-      },
-      async getPermissions () {
-        try {
-          this.userPermissions = await Service.getUserPermissions();
-          this.userPermissions = this.userPermissions[0].permissions 
-        } catch(err) {
-          this.error = err.message;
-          console.log("getPermissions error: " + this.error)
-        }
-        
-      },
-      authorized : function() {
-          return (this.userPermissions == '2')
       }
     },
     computed: {
