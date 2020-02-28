@@ -14,14 +14,14 @@
           <th>Name</th>
           <th>LastName</th>
           <th>Mail</th>
-          <th v-if="authorized">Delete</th>
+          <th>Delete</th>
       </tr>
       <template v-for="item in filteredData" >
         <tr @click="expanded(item._id)" class="dataRows" :key="item._id">
           <td>{{ item.name }}</td>
           <td>{{ item.lastName }}</td>
           <td>{{ item.mail }}</td>
-          <td v-if="authorized"><figure class="swap-on-hover"  @click="deleteItem(item._id)"> <img class= "dustBinImg" alt="dust bin logo" src="../assets/dustbin.png"><img class= "dustBinImgW" alt="dust bin logo" src="../assets/dustbinW.png"></figure></td>
+          <td ><figure class="swap-on-hover"  @click="deleteItem(item._id)"> <img class= "dustBinImg" alt="dust bin logo" src="../assets/dustbin.png"><img class= "dustBinImgW" alt="dust bin logo" src="../assets/dustbinW.png"></figure></td>
         </tr>
         <transition  name="fade" :key="item._id+3">
           <div  class = "expandedData" v-if="opened.includes(item._id)" :key="item._id+1">

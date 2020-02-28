@@ -27,11 +27,12 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Maven+Pro');
 #app {
   font-family: 'Maven Pro', sans-serif;
-
 }
+
 body {
   padding-top: 10px;
   color: grey;
+  font-family: 'Maven Pro', sans-serif;
 }
 #irsLogo {
   height:40px;
